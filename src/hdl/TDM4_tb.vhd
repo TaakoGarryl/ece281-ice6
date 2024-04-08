@@ -11,7 +11,7 @@
 --| ---------------------------------------------------------------------------
 --|
 --| FILENAME      : TDM4_tb.vhd (TEST BENCH)
---| AUTHOR(S)     : Capt Phillip Warner, Capt Dan Johnson, **Your Name**
+--| AUTHOR(S)     : Capt Phillip Warner, Capt Dan Johnson, Now me as well
 --| CREATED       : 03/2017 Last modified on 06/24/2020
 --| DESCRIPTION   : This file tests the 4 to 1 TDM.
 --|
@@ -54,28 +54,43 @@ architecture test_bench of TDM4_tb is
   
 	component TDM4 is
 		-- fill in from TDM4.vhd
-
+    generic ( constant k_WIDTH : natural  := 4);
+    Port ( 
+          i_clk		: in  STD_LOGIC;
+          i_reset        : in  STD_LOGIC; -- asynchronous
+          i_D3         : in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+          i_D2         : in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+          i_D1         : in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+          i_D0         : in  STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+          o_data        : out STD_LOGIC_VECTOR (k_WIDTH - 1 downto 0);
+          o_sel        : out STD_LOGIC_VECTOR (3 downto 0)    -- selected data line (one-cold)
+            );
 	end component TDM4;
 
 	-- Setup test clk (20 ns --> 50 MHz) and other signals
-	
+	constant k_clk_period : time := 20 ns;
 	-- Constants
 	constant k_IO_WIDTH : natural := 4;
 	-- Signals
+	signal f_sel_n : unsigned(1 downto 0) := "00";
+	signal w_clk : std_logic;
+	signal w_reset: std_logic;
+	signal w_D3, w_D2, w_D1, w_D0 : std_logic_vector (k_IO_WIDTH -1 downto 0);
+	signal f_data : std_logic_vector (k_IO_WIDTH - 1 downto 0);
 	
 begin
 	-- PORT MAPS ----------------------------------------
 	-- map ports for any component instances (port mapping is like wiring hardware)
 	uut_inst : TDM4 
-	generic map ( k_WIDTH =>  )
-	port map ( i_clk   => 
-		       i_reset => 
-		       i_D3    => 
-		       i_D2    => 
-		       i_D1    => 
-		       i_D0    => 
-		       o_data  => 
-		       o_sel   => 
+	generic map ( k_WIDTH => k_IO_WIDTH )
+	port map ( i_clk   => w_clk,
+		       i_reset => w_reset,
+		       i_D3    => w_D3,
+		       i_D2    => w_D2,
+		       i_D1    => w_D1,
+		       i_D0    => w_D0,
+		       o_data  => f_data,
+		       o_sel   => f_sel_n
 	);
 	-----------------------------------------------------	
 	
