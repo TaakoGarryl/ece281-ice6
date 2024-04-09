@@ -89,8 +89,8 @@ begin
 		       i_D2    => w_D2,
 		       i_D1    => w_D1,
 		       i_D0    => w_D0,
-		       o_data  => f_data,
-		       o_sel   => f_sel_n
+		       o_data  => f_data
+		       --o_sel   =>
 	);
 	-----------------------------------------------------	
 	
@@ -108,8 +108,10 @@ begin
 	test_process : process 
 	begin
 		-- assign test values to data inputs
-
-				
+        w_D3 <= "1100";
+		w_D2 <= "1001";
+		w_D1 <= "0110";
+		w_D0 <= "0011";
 		-- reset the system first
 		w_reset <= '1';
 		wait for k_clk_period;		
