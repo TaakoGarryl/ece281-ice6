@@ -90,6 +90,7 @@ begin
 		       i_D1    => w_D1,
 		       i_D0    => w_D0,
 		       o_data  => f_data
+		
 		       --o_sel   =>
 	);
 	-----------------------------------------------------	
@@ -98,10 +99,21 @@ begin
 	-- Clock Process ------------------------------------
 	clk_process : process
 	begin
-
-
+        w_clk <= '0';
+            wait for k_clk_period/2;
+            w_clk <= '1';
+            wait for k_clk_period/2;
 
 	end process clk_process;
+	
+	twoBitCounter_proc : process(w_clk, w_reset)
+        begin
+            if w_reset = '1' then
+                f_sel_n <= "00";
+            elsif rising_edge(w_clk) then
+                f_sel_n <= f_sel_n + 1;
+            end if;
+        end process twoBitCounter_proc;
 	-----------------------------------------------------	
 	
 	-- Test Plan Process --------------------------------
